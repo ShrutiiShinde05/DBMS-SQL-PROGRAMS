@@ -1,0 +1,195 @@
+Name: Shruti Sunil Shinde;
+Roll no: 65;
+Batch: S3;
+Assignment no 2;
+date:6 feb 2026;
+
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| emplye             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| shruti             |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use shruti;
+Database changed
+mysql> create table Employeee(Eid int, EName varchar(20), Address varchar(20), Salary int , Commission int);
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> create table Project (PrNo int, Addr varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into Employeee values (1,"Amit","Pune",35000,5000),(2,"Sneha","Pune",25000,NULL),(3,"Savita","Nasik",28000,2000),(4,"Pooja","MUmbai",19000,NULL),(5,"Sagar","Mumbai",25000,3000);
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into Project (10,"Mumbai"),(20,"Pune")(30,"Jalgaon");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '10,"Mumbai"),(20,"Pune")(30,"Jalgaon")' at line 1
+mysql> insert into Project (10,"Mumbai"),(20,"Pune"),(30,"Jalgaon");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '10,"Mumbai"),(20,"Pune"),(30,"Jalgaon")' at line 1
+mysql> insert into Project values(10,"Mumbai"),(20,"Pune"),(30,"Jalgaon");
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employeee;
++------+--------+---------+--------+------------+
+| Eid  | EName  | Address | Salary | Commission |
++------+--------+---------+--------+------------+
+|    1 | Amit   | Pune    |  35000 |       5000 |
+|    2 | Sneha  | Pune    |  25000 |       NULL |
+|    3 | Savita | Nasik   |  28000 |       2000 |
+|    4 | Pooja  | MUmbai  |  19000 |       NULL |
+|    5 | Sagar  | Mumbai  |  25000 |       3000 |
++------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select  * from Project;
++------+---------+
+| PrNo | Addr    |
++------+---------+
+|   10 | Mumbai  |
+|   20 | Pune    |
+|   30 | Jalgaon |
++------+---------+
+3 rows in set (0.00 sec)
+
+mysql> Q1.Find different locations from where employees belong to?
+    -> ^C
+mysql> select distinct address from Employeee;
++---------+
+| address |
++---------+
+| Pune    |
+| Nasik   |
+| MUmbai  |
++---------+
+3 rows in set (0.02 sec)
+
+mysql> Q2.What is maximum and minimum salary?;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Q2.What is maximum and minimum salary?' at line 1
+mysql> Q2.What is maximum and minimum salary?
+    -> ^C
+mysql> select max(Salary) as Maximum_Salary, min(Salary) as Minimun_Salary from employeee;
++----------------+----------------+
+| Maximum_Salary | Minimun_Salary |
++----------------+----------------+
+|          35000 |          19000 |
++----------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> Q3.Display the content of employee table according to the ascending order of salary amount.
+    -> ^C
+mysql> select * from employeee order by Salary ASC;
++------+--------+---------+--------+------------+
+| Eid  | EName  | Address | Salary | Commission |
++------+--------+---------+--------+------------+
+|    4 | Pooja  | MUmbai  |  19000 |       NULL |
+|    2 | Sneha  | Pune    |  25000 |       NULL |
+|    5 | Sagar  | Mumbai  |  25000 |       3000 |
+|    3 | Savita | Nasik   |  28000 |       2000 |
+|    1 | Amit   | Pune    |  35000 |       5000 |
++------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> Q4. Find the name of employee who lived in Nasik or Pune city.
+    -> ^C
+mysql> select EName from Employeee where Address in ("Nashik","Pune");
++-------+
+| EName |
++-------+
+| Amit  |
+| Sneha |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> Q5.Find the name of employees who does not get commission.
+    -> ^C
+mysql> select EName from Employeee where Commission is null;
++-------+
+| EName |
++-------+
+| Sneha |
+| Pooja |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> Q6.Change the city of Amit to Nashik.
+    -> ^C
+mysql> update Employeee set address="Nasik" where Ename="Amit";
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Employeee;
++------+--------+---------+--------+------------+
+| Eid  | EName  | Address | Salary | Commission |
++------+--------+---------+--------+------------+
+|    1 | Amit   | Nasik   |  35000 |       5000 |
+|    2 | Sneha  | Pune    |  25000 |       NULL |
+|    3 | Savita | Nasik   |  28000 |       2000 |
+|    4 | Pooja  | MUmbai  |  19000 |       NULL |
+|    5 | Sagar  | Mumbai  |  25000 |       3000 |
++------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> Q7.Find the information of employees whose name starts with 'A'.
+    -> ^C
+mysql> select * from Employeee where Ename like 'A%';
++------+-------+---------+--------+------------+
+| Eid  | EName | Address | Salary | Commission |
++------+-------+---------+--------+------------+
+|    1 | Amit  | Nasik   |  35000 |       5000 |
++------+-------+---------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> Q.8 Find the count of staff from Mumbai.
+    -> ^C
+mysql> select count(*) as Mumbai_Employees from Employeee where Address = 'Mumbai';
++------------------+
+| Mumbai_Employees |
++------------------+
+|                2 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Q.9 Find the count of staff from each city
+    -> ^C
+mysql> select Address, count(*) as Total_Employeee from Employeee group by Address;
++---------+-----------------+
+| Address | Total_Employeee |
++---------+-----------------+
+| Nasik   |               2 |
+| Pune    |               1 |
+| MUmbai  |               2 |
++---------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> Q10. Find the address from where employees are belonging as well as where projects are going on.
+    -> ^C
+mysql> select distinct Employeee.Address from Employeee inner join Project on Employeee.Address=Project.Addr;
++---------+
+| Address |
++---------+
+| Pune    |
+| MUmbai  |
++---------+
+2 rows in set (0.00 sec)
