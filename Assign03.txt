@@ -1,0 +1,322 @@
+NAME : Shruti Shinde
+ROLLNO :    65
+ASSIGNMENT NO : 3
+
+
+
+                                      -------IN ADMIN TERMINAL-----
+
+Q1) User Creation and Privilege Assignment
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| assig3             |
+| assignment1        |
+| assignment2        |
+| assignment3        |
+| assignment6        |
+| bank               |
+| mysql              |
+| performance_schema |
+| practical4         |
+| practice           |
+| test               |
++--------------------+
+12 rows in set (0.01 sec)
+
+mysql> Use assig3;
+Database changed
+mysql> Create table stud(rno int PRIMARY KEY , name VARCHAR(20), marks int);
+Query OK, 0 rows affected (3.60 sec)
+mysql> INSERT INTO stud VALUES(1,'Shruti',90),(2,'Kritika',80);
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
++-----+-----------+-------+
+2 rows in set (0.01 sec)
+
+mysql> CREATE USER 'user1'@'Localhost' identified by 'pass123';
+Query OK, 0 rows affected (0.09 sec)
+mysql> Select user from mysql.user;
++-------------+
+| user        |
++-------------+
+| SHRUTI2006  |
+| Shruti      |
+| a1          |
+| root        |
+| user1       |
++-------------+
+5 rows in set (0.00 sec)
+mysql> CREATE USER 'user2'@'Localhost' identified by 'lab2';
+Query OK, 0 rows affected (0.00 sec)
+mysql> GRANT SELECT ON stud TO 'user1'@'Localhost' WITH GRANT OPTION;
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> REVOKE INSERT ON Stud FROM 'user1'@'Localhost';
+Query OK, 0 rows affected (0.00 sec)
+mysql> EXIT
+Bye
+
+
+                                         -------IN ANOTHER TERMINAL-----
+
+PS C:\> mysql -u user1 -p
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.5.16 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| assig3             |
++--------------------+
+2 rows in set (0.01 sec)
+
+mysql> use assig3;
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_assig3 |
++------------------+
+| stud             |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> Select * from stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
++-----+-----------+-------+
+2 rows in set (0.02 sec)
+mysql> GRANT SELECT ON stud TO 'user2'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> INSERT INTO stud VALUES(10,'PRIYA',89);
+ERROR 1142 (42000): INSERT command denied to user 'user1'@'localhost' for table 'stud'
+mysql> EXIT
+Bye
+
+                                         -------IN ADMIN TERMINAL-----
+
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.5.16 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| assig3             |
+| assignment1        |
+| assignment2        |
+| assignment3        |
+| assignment6        |
+| bank               |
+| mysql              |
+| performance_schema |
+| practical4         |
+| practice           |
+| test               |
++--------------------+
+12 rows in set (0.01 sec)
+
+mysql> Use assig3;
+Database changed
+
+Q2) Role Management
+
+mysql> CREATE TABLE Employee(
+    -> EmpID INT,
+    -> Name VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE USER 'labuser'@'localhost' IDENTIFIED BY 'lab123';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> GRANT SELECT, INSERT ON Employee TO 'labuser'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT User, Host FROM mysql.user;
++-------------+-----------+
+| User        | Host      |
++-------------+-----------+
+| SHRUTI2006  | localhost |
+| Shruti      | localhost |
+| a1          | localhost |
+| labuser     | localhost |
+| root        | localhost |
+| user1       | localhost |
+| user2       | localhost |
++-------------+-----------+
+7 rows in set (0.02 sec)
+
+
+Q3) Commit Operation
+
+mysql> Select * From stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
+|   3 | Rahul     |    70 |
++-----+-----------+-------+
+3 rows in set (0.03 sec)
+
+mysql> INSERT INTO Stud VALUES(4,'Priya',79),(5,'Kiran',95);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> SET AUTOCOMMIT=0;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM Stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
+|   3 | Rahul     |    70 |
+|   4 | Priya     |    79 |
+|   5 | Kiran     |    95 |
++-----+-----------+-------+
+5 rows in set (0.01 sec)
+
+Q4) Rollback Operation
+
+mysql> SELECT * FROM Stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
+|   3 | Rahul     |    70 |
+|   4 | Priya     |    79 |
+|   5 | Kiran     |    95 |
++-----+-----------+-------+
+5 rows in set (0.01 sec)
+
+mysql> INSERT INTO stud VALUES(6,'Rohan',75);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
+|   3 | Rahul     |    70 |
+|   4 | Priya     |    79 |
+|   5 | Kiran     |    95 |
++-----+-----------+-------+
+5 rows in set (0.00 sec)
+
+Q5) Savepoint Demonstration
+
+mysql> SELECT * FROM stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
+|   3 | Rahul     |    70 |
+|   4 | Priya     |    79 |
+|   5 | Kiran     |    95 |
++-----+-----------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO stud VALUES(6,'Ravi',88);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SAVEPOINT s1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO stud VALUES(7,'Anita',76);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO stud VALUES(8,'Suresh',98);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> ROLLBACK TO s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM stud;
++-----+-----------+-------+
+| rno | name      | marks |
++-----+-----------+-------+
+|   1 | Shruti    |    90 |
+|   2 | Kritika   |    80 |
+|   3 | Rahul     |    70 |
+|   4 | Priya     |    79 |
+|   5 | Kiran     |    95 |
+|   6 | Ravi      |    88 |
++-----+-----------+-------+
+6 rows in set (0.00 sec)
+
+
+INNOVATION : Data Security using Privilege Control
+
+In this assignment, different users were created and specific privileges were given to them. This helps in improving database security because each user can access only the data they are permitted to use. For example, user1 was allowed to SELECT data but not INSERT, which prevents unauthorized changes in the database.
+
+Innovation 2: Biometric-Based Database Security
+In the future, databases can use biometric authentication such as fingerprint or face recognition to allow access. This will improve database security because only authorized users will be able to log in and access sensitive data. 
+
+Innovation 3: Create a View for Secure Data Access
+
+Idea: Instead of giving access to the whole table, we can create a VIEW so users can see only required data.
+
+Query
+CREATE VIEW stud_view AS
+SELECT name, marks FROM stud;
+
+SELECT * FROM stud_view;
+Explanation
+
+This view hides the roll number and shows only name and marks, which improves data privacy and security.
+
