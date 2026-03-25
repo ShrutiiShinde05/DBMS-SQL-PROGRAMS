@@ -1,0 +1,90 @@
+Name : Shruti Shinde
+Rollno : 65
+Assignment no : 6
+
+
+mysql> Create database Assignment6 ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use Assignment6;
+Database changed
+mysql> CREATE TABLE Stud_Marks(
+    -> name VARCHAR(20),
+    -> total_marks INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> Desc Stud_Marks;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| name        | varchar(20) | YES  |     | NULL    |       |
+| total_marks | int(11)     | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.03 sec)
+
+mysql> CREATE TABLE Result(
+    -> Roll INT AUTO_INCREMENT PRIMARY KEY,
+    -> Name VARCHAR(20),
+    -> Class VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Desc Result;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| Roll  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Name  | varchar(20) | YES  |     | NULL    |                |
+| Class | varchar(30) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+3 rows in set (0.02 sec)
+mysql> INSERT INTO Stud_Marks VALUES('Ram',1200),('Riya',950),('Amit',850);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> Select * From Stud_Marks;
++------+-------------+
+| name | total_marks |
++------+-------------+
+| Ram  |        1200 |
+| Riya |         950 |
+| Amit |         850 |
++------+-------------+
+3 rows in set (0.02 sec)
+
+mysql> DELIMITER //
+mysql> CREATE FUNCTION proc_Grade(marks INT)
+    -> RETURNS VARCHAR(30)
+    -> DETERMINISTIC
+    -> BEGIN
+    -> IF marks >= 990 AND marks <=1500 THEN
+    -> RETURN 'Distinction';
+    -> ELSEIF marks >=900 AND marks <=989 THEN
+    -> RETURN 'First Class';
+    -> ELSEIF marks >=825 AND marks <=899 THEN
+    -> RETURN 'Higher Second Class';
+    -> ELSE
+    -> RETURN 'Pass';
+    -> END IF;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Result(Name,Class)
+    -> SELECT name, proc_Grade(total_marks)
+    -> FROM Stud_Marks;
+    -> //
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> SELECT * FROM Result;
+    -> //
++------+------+---------------------+
+| Roll | Name | Class               |
++------+------+---------------------+
+|    1 | Ram  | Distinction         |
+|    2 | Riya | First Class         |
+|    3 | Amit | Higher Second Class |
++------+------+---------------------+
+3 rows in set (0.00 sec)
+
+INNOVATION : 
