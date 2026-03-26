@@ -1,0 +1,156 @@
+Name: Shruti Sunil Shinde.
+Roll no. 65
+assignment no 8
+
+
+
+mysql> create database Ass8;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use Ass8;
+Database changed
+mysql> CREATE TABLE Library (
+    ->     Book_ID INT PRIMARY KEY,
+    ->     Book_Name VARCHAR(100),
+    ->     Author VARCHAR(100),
+    ->     Price DECIMAL(10,2),
+    ->     Quantity INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Library VALUES
+    -> (1,'Database System Concepts','Silberschatz',550,10),
+    -> (2,'Operating System','Galvin',650,5),
+    -> (3,'Computer Networks','Tanenbaum',700,7);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from Library;
++---------+--------------------------+--------------+--------+----------+
+| Book_ID | Book_Name                | Author       | Price  | Quantity |
++---------+--------------------------+--------------+--------+----------+
+|       1 | Database System Concepts | Silberschatz | 550.00 |       10 |
+|       2 | Operating System         | Galvin       | 650.00 |        5 |
+|       3 | Computer Networks        | Tanenbaum    | 700.00 |        7 |
++---------+--------------------------+--------------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Library_Audit (
+    ->     Audit_ID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     Book_ID INT,
+    ->     Book_Name VARCHAR(100),
+    ->     Author VARCHAR(100),
+    ->     Price DECIMAL(10,2),
+    ->     Quantity INT,
+    ->     Action_Type VARCHAR(20),
+    ->     Action_Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELIMITER $$
+mysql>
+mysql> CREATE TRIGGER trg_library_update
+    -> BEFORE UPDATE ON Library
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO Library_Audit
+    ->     (Book_ID, Book_Name, Author, Price, Quantity, Action_Type)
+    ->     VALUES
+    ->     (OLD.Book_ID, OLD.Book_Name, OLD.Author, OLD.Price, OLD.Quantity, 'UPDATE');
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> UPDATE Library
+    -> SET Price = 600
+    -> WHERE Book_ID = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Library;
++---------+--------------------------+--------------+--------+----------+
+| Book_ID | Book_Name                | Author       | Price  | Quantity |
++---------+--------------------------+--------------+--------+----------+
+|       1 | Database System Concepts | Silberschatz | 600.00 |       10 |
+|       2 | Operating System         | Galvin       | 650.00 |        5 |
+|       3 | Computer Networks        | Tanenbaum    | 700.00 |        7 |
++---------+--------------------------+--------------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Library_Audit;
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+
+| Audit_ID | Book_ID | Book_Name                | Author       | Price  | Quantity | Action_Type | Action_Time         |
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+
+|        1 |       1 | Database System Concepts | Silberschatz | 550.00 |       10 | UPDATE      | 2026-03-16 22:27:37 |
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> DELIMITER $$
+mysql>
+mysql> CREATE TRIGGER trg_library_delete
+    -> BEFORE DELETE ON Library
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO Library_Audit
+    ->     (Book_ID, Book_Name, Author, Price, Quantity, Action_Type)
+    ->     VALUES
+    ->     (OLD.Book_ID, OLD.Book_Name, OLD.Author, OLD.Price, OLD.Quantity, 'DELETE');
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> DELETE FROM Library
+    -> WHERE Book_ID = 2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM Library_Audit;
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+
+| Audit_ID | Book_ID | Book_Name                | Author       | Price  | Quantity | Action_Type | Action_Time         |
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+
+|        1 |       1 | Database System Concepts | Silberschatz | 550.00 |       10 | UPDATE      | 2026-03-16 22:27:37 |
+|        2 |       2 | Operating System         | Galvin       | 650.00 |        5 | DELETE      | 2026-03-16 22:28:58 |
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+
+2 rows in set (0.00 sec)
+
+
+*****INNOVATION1******
+
+mysql> CREATE VIEW Library_Audit_Report AS
+    -> SELECT Book_ID, Book_Name, Action_Type, Action_Time
+    -> FROM Library_Audit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from Library;
++---------+--------------------------+--------------+--------+----------+
+| Book_ID | Book_Name                | Author       | Price  | Quantity |
++---------+--------------------------+--------------+--------+----------+
+|       1 | Database System Concepts | Silberschatz | 600.00 |       10 |
+|       3 | Computer Networks        | Tanenbaum    | 700.00 |        7 |
++---------+--------------------------+--------------+--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE VIEW Library_Audit_Report1 AS
+    -> SELECT Book_ID, Book_Name, Action_Type, Action_Time
+    -> FROM Library_Audit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from Library;
++---------+--------------------------+--------------+--------+----------+
+| Book_ID | Book_Name                | Author       | Price  | Quantity |
++---------+--------------------------+--------------+--------+----------+
+|       1 | Database System Concepts | Silberschatz | 600.00 |       10 |
+|       3 | Computer Networks        | Tanenbaum    | 700.00 |        7 |
++---------+--------------------------+--------------+--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Library_Audit;
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+-------------+
+| Audit_ID | Book_ID | Book_Name                | Author       | Price  | Quantity | Action_Type | Action_Time         | Modified_By |
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+-------------+
+|        1 |       1 | Database System Concepts | Silberschatz | 550.00 |       10 | UPDATE      | 2026-03-16 22:27:37 | NULL        |
+|        2 |       2 | Operating System         | Galvin       | 650.00 |        5 | DELETE      | 2026-03-16 22:28:58 | NULL        |
++----------+---------+--------------------------+--------------+--------+----------+-------------+---------------------+-------------+
+2 rows in set (0.00 sec)
+
